@@ -28,18 +28,22 @@ namespace DefaultNamespace
         }
 
 
-        public int CompareColors(Color a, Color b)
+        public float GetColorDiff(Color a, Color b)
         {
-            var result =
-                1.0 - (
-                    Math.Abs(a.r - b.r)/3f +
-                    Math.Abs(a.g - b.g)/3f +
-                    Math.Abs(a.b - b.b)/3f
-                );
+            //redMean method  https://en.wikipedia.org/wiki/Color_difference
+            var rDiff = a.r - b.r;
+            var gDiff = a.g - b.g;
+            var bDiff = a.b - b.b; 
+            var rMul = 0.5f * (a.r+b.r);
+
+
             
-           var resultInt = Mathf.RoundToInt((float)result*100);
-  
-            return resultInt;
+            var colorDistSquared = (2/256 + rMul ) * Mathf.Pow(rDiff,2) + 4 *  Mathf.Pow(gDiff,2) +
+                                   (2/256+ ((1-1/256)- rMul)) *Mathf.Pow(bDiff,2) ;
+            
+            var result = (decimal)Mathf.Sqrt(colorDistSquared);
+            var rounded = Decimal.Round(result, 2);
+            return (float)rounded;
         }
     }
 }
