@@ -22,6 +22,7 @@ namespace DefaultNamespace
         [SerializeField] private TMP_Text _buttonText;
         [SerializeField] private TMP_Text _levelNumber;
         private float _levelEndDelay = 1f;
+        private float _alpha = .6f;
         public event Action OnBeginGame;
         public event Action OnFinishLevel;
         private void Awake()
@@ -48,12 +49,14 @@ namespace DefaultNamespace
         private IEnumerator ShowEndLevelUI(bool win, Color aimCol, Color resultCol, float result)
         {
             yield return new WaitForSeconds(_levelEndDelay);
-            aimCol.a = 0.6f;
-            resultCol.a = 0.6f;
+          
+            aimCol.a = _alpha;
+            resultCol.a = _alpha;
             _aim.color = aimCol;
             _result.color = resultCol;
              
-            _percent.text = result + "%";
+            
+            _percent.text = (1-result)*100f  + "%";
             
             _winLose.text = win? "You won": "Try again";
             _buttonText.text = win?  "Next":  "Restart";

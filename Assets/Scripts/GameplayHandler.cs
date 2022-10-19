@@ -42,10 +42,10 @@ public class GameplayHandler : MonoBehaviour
         _mixButton.interactable = false;
         var avgColor = _colorBlender.AverageColour(_colorsPicked);
         _blender.OpenBlender(false);
-        var colorMatch =  _colorBlender.CompareColors(avgColor, _desiredColor);
-        _isLevelWon = _winChecker.IsWin(colorMatch);
+        var colorDelta =  _colorBlender.GetColorDiff(avgColor, _desiredColor);
+        _isLevelWon = _winChecker.IsWin(colorDelta);
         _fruitsSpawner.RemoveFruits();
-         InvokeLevelEnd(_isLevelWon,  _desiredColor, avgColor, colorMatch);
+         InvokeLevelEnd(_isLevelWon,  _desiredColor, avgColor, colorDelta);
         _juice.ShowJuice(true);
         _juice.SetColor(avgColor);
         
@@ -71,7 +71,7 @@ public class GameplayHandler : MonoBehaviour
         
     }
 
-    private void InvokeLevelEnd(bool win, Color aimCol, Color resultCol, int result)
+    private void InvokeLevelEnd(bool win, Color aimCol, Color resultCol, float result)
     {
         _uiHandler.OnLevelEnd(win, aimCol, resultCol, result  );
     }
